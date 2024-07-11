@@ -3,13 +3,13 @@ package com.joefol.AccountManager.controllers;
 import com.joefol.AccountManager.users.UserDto;
 import com.joefol.AccountManager.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class UserController {
 
     @Autowired
@@ -25,5 +25,10 @@ public class UserController {
         userService.save(userDto);
         model.addAttribute("message", "Registered Successfully!");
         return "register";
+    }
+
+    @GetMapping
+    public String login() {
+        return "login";
     }
 }
