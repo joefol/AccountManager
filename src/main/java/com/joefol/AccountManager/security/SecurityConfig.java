@@ -31,12 +31,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req.requestMatchers("/admin-home").permitAll()
                         .requestMatchers("/user-page").permitAll()
-                        .requestMatchers("/registration", "/css/**").permitAll()
+                        .requestMatchers("/registration", "/login", "/css/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/").permitAll())
+                        .defaultSuccessUrl("/index").permitAll())
                 .logout(form -> form.invalidateHttpSession(true).clearAuthentication(true)
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/login"))
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login?logout").permitAll());
         return http.build();
     }

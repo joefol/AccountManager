@@ -10,28 +10,36 @@
 <body>
 
     <div class="container">
-        <h2>Register</h2>
-        <form id="registrationForm">
+        <div class="message" th:if="${message != null}">
+            [[${message}]]
+        </div>
+
+        <h2>Registration Form</h2>
+        <form
+                th:action="@{/registration}"
+                method="post"
+                role="form"
+                th:object="${user}"
+        >
             <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname" required>
+                <label for="firstName">First Name</label>
+                <input th:field="*{firstName}" type="text" id="firstName" name="firstName" placeholder="Enter your first name" required>
             </div>
             <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname" required>
+                <label for="lastName">Last Name</label>
+                <input th:field="*{lastName}" type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div class="form-group">
                 <input type="submit" value="Register">
             </div>
-            <div class="message" id="message"></div>
         </form>
     </div>
 
