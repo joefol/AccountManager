@@ -1,5 +1,6 @@
 package com.joefol.AccountManager.security;
 
+import com.joefol.AccountManager.users.CustomSuccessHandler;
 import com.joefol.AccountManager.users.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     @Autowired
+    CustomSuccessHandler customSuccessHandler;
+
+    @Autowired
     CustomUserDetailsService customUserDetailsService;
 
     @Bean
@@ -29,12 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req -> req.requestMatchers("/admin-home").permitAll()
-                        .requestMatchers("/user-page").permitAll()
+                .authorizeHttpRequests(req -> req.requestMatchers("/admin-page").hasAuthority("ADMIN")
+                        .requestMatchers("/user-page").hasAuthority("USER")
                         .requestMatchers("/registration", "/login", "/css/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/index").permitAll())
+                        .successHandler(customSuccessHandler).permitAll())
                 .logout(form -> form.invalidateHttpSession(true).clearAuthentication(true)
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl("/login?logout").permitAll());
